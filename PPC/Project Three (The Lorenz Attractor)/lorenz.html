@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>The Lorenz Attractor</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+      
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <h1 class="title"><a href="javascript:history.back()"><button class="button-2" role="button">Go Back</button></a></h1>
+      <h1 class = "title">The Lorenz Attractor</h1>
+    </header>
+
+    <section class="content">
+      <h2 class="red">Introduction to the Lorenz Attractor</h2>
+      <p>The Lorenz attractor is a mathematical model that represents the behaviour of a chaotic system. It was introduced by meteorologist Edward Lorenz in the 1960s while studying the convection of fluid in the Earth's atmosphere.
+      </p>
+      <p>In simple terms, imagine a butterfly flapping its wings in Brazil. The tiny changes in the air caused by the butterfly's wings can set off a chain reaction, leading to larger and more unpredictable weather patterns elsewhere. The Lorenz attractor describes a similar phenomenon in a mathematical system, where small changes in initial condition can result in vastly different and unpredictable outcomes over time.</p>
+    </section>
+
+    <section class="content">
+      <h2 class="red">Equations</h2>
+      <p>The Lorenz system is represented by the following set of three differential equations:</p>
+      <pre>
+        dx/dt = σ(y - x)
+        dy/dt = x(ρ - z) - y
+        dz/dt = xy - βz
+      </pre>
+      <p>Here, σ, ρ, and β are system parameters.</p>
+    </section>
+
+    <section class="content">
+      <h2 class="red">Visualising the Lorenz Attractor Using JavaScript and P5.js</h2>
+      <div class="container">
+        <div class="code">
+          <pre>
+            <code>
+            var x = 0.01;
+            var y = 0;
+            var z = 0;
+            
+            var sigma = 10;
+            var rho = 28;
+            var beta = 8.0 / 3.0;
+            
+            var pVector = [];
+            
+            function setup() {
+              createCanvas(windowWidth, 600, WEBGL); 
+              background(0);
+              camera(0, 0, 150);
+            }
+            
+            function draw() {
+              var dt = 0.01;
+            
+              var dx = (sigma * (y - x)) * dt;
+              var dy = (x * (rho - z) - y) * dt;
+              var dz = (x * y - beta * z) * dt;
+            
+              x = x + dx;
+              y = y + dy;
+              z = z + dz;
+            
+              pVector.push(createVector(x, y, z));
+            
+              background(0); 
+            
+            
+             rotateX(frameCount * 0.005);
+             rotateY(frameCount * 0.005);
+            
+             beginShape();
+            
+              noFill();
+              stroke(255);
+              strokeWeight(0.8)
+            
+              var hu = 0;
+              beginShape();
+              for (var i = 0; i < pVector.length; i++) {
+                var v = pVector[i];
+                vertex(v.x, v.y, v.z);
+              }
+              endShape();
+            
+              console.log(x, y, z);
+            }
+          </code>
+            
+  </pre>
+        </div>
+        <div class="explanation">
+            <ol>
+              <li class="bold">Variable Declarations:</li>
+              <ul>
+                <li><div class = "bold">Variables:</div> x, y and z are the variables in this equation, and for the visualisation, they are used as the axes.</li>
+                <li><div class = "bold">'x':</div> Initialises the x value to 0.01.</li>
+                <li><div class = "bold">'y':</div> Initialises the y value to 0.</li>
+                <li><div class = "bold">'z':</div> Initialises the z value to 0.</li>
+                
+                <li><div class = "bold">'Constants':</div> sigma, rho and beta are our constants.</li>
+                <li><div class = "bold">'sigma':</div> Initialises sigma to 10.</li>
+                <li><div class = "bold">'rho':</div> Initialises rho to 28.</li>
+                <li><div class = "bold">'beta':</div> Initialises beta to 8/3.</li>
+                <li><div class = "bold">'pVector:</div> An empty array to store 3D vector representing points in the trajectory of the Lorenz attractor.</li>
+              </ul>
+              <br>
+              <li class="bold">setup() Function</li>
+              <ul>
+                <li><div class = "bold">'setup()':</div> setup() is a p5.js function that is called once when the program starts.</li>
+                <li><div class = "bold">'createCanvas(windowWidth, 600, WEBGL)': </div> Creates a 3D canvas using WebGL with a width equal to the window width and a fixed height of 600 pixels.</li>
+                <li><div class = "bold">'background(0)':</div> Sets the background color to black.</li>
+                <li><div class = "bold">'camera(0, 0, 150)': </div> Positions the camera to coordinates (0,0,150).</li>
+              </ul>
+              <br>
+              <li class="bold">draw() Function</li>
+              <ul>
+                <li><div class = "bold">'draw()':</div> draw() is another p5.js fnction that continuously executes as long as the program is running.</li>
+                <li><div class = "bold"></div>Calculates changes in 'x', 'y', and 'z' based on the Lorenz system equations, which describe the evolution of a dynamical system exhibiting chaotic behavior.</li>
+                <li><div class = "bold"></div>Updates the current values of 'x', 'y', and 'z' based on the calculated changes.</li>
+                <li><div class = "bold"></div>Pushes the current position as a 3D vector into the 'pVector' array to keep track of the trajectory.</li>
+                <li><div class = "bold"></div>Rotates the canvas.</li>
+                <li><div class = "bold"></div>Begins the definition of a shape to visualise the Lorenz attractor trajectory.</li>
+                <li><div class = "bold"></div>Loops through the 'pVector' array and draws a vertex at each position, forming the trajectory of the Lorenz attractor in 3D space.</li>
+                <li><div class = "bold"></div>Outputs the current values of 'x', 'y', and 'z' to the console. (not required)</li>
+                <li><div class = "bold"></div>Everything is then repeated.</li>
+            </ol>
+        </div>
+      </div>
+      <br>
+    </section>
+
+    <section class="content">
+      <h2 class="red">Visualisation of the Lorenz Attractor</h2>
+      <script src="sketch.js"></script>
+    </section>
+    
+  </body>
+</html>

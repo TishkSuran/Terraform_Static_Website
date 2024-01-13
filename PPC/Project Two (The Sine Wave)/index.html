@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+
+    <title>The Sine Wave</title>
+
+  
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+    
+  </head>
+
+  <body>
+    <h1 class="title"><a href="javascript:history.back()"><button class="button-2" role="button">Go Back</button></a></h1>
+
+    <h1 class="title">The Sine Wave</h1>
+    
+    <h3>What are Sine Waves?</h3>
+    <p>A sine wave is a fundamental type of wave, with smooth, repeating, and symmetrical curves that oscillates regularly between maximum and minimum values. Sine waves are characterised by its frequency, which determines how quickly it repeats, and its amplitude, which indicates height.</p>
+    <img src="Sine_curve_drawing_animation.gif">
+    <h3 class="heading1">Sine Wave Visualisation using JavaScript</h3>
+    <script src="sketch.js"></script>
+
+    <div class="container">
+      <div class="code">
+        <pre>
+let xspacing = 16; 
+let w; 
+let theta = 0.0; 
+let amplitude = 75.0; 
+let period = 500.0; 
+let dx;  
+let yvalues; 
+
+function setup() {
+  strokeWeight(1)
+  createCanvas(windowWidth, 500);
+  w = width + 16;
+  dx = (TWO_PI / period) * xspacing
+  yvalues = new Array(floor(w / xspacing))
+}
+
+ 
+
+function draw() {
+  background(255); 
+  calcWave()
+  renderWave();
+}
+
+
+function calcWave(){
+  theta += 0.02
+
+  let x = theta;
+  for(let i = 0; i < yvalues.length; i++){
+    yvalues[i] = sin(x) * amplitude;
+    x += dx;
+  }
+}
+
+function renderWave(){
+  noStroke()
+  fill(0)
+  for(let x = 0; x < yvalues.length; x++){
+    ellipse(x * xspacing, height / 2 + yvalues[x], 16, 16)
+  }
+}
+</pre>
+      </div>
+      <div class="explanation">
+          <ol>
+            <li class="bold">Variable Declarations:</li>
+            <ul>
+              <li><div class = "bold">'xspacing':</div> This variable is set to 16 and determines the horizontal spacing between wave points.</li>
+              <li><div class = "bold">'w':</div> It will store the width of the canvas.</li>
+              <li><div class = "bold">'theta':</div> Represents an angle, initialised to 0.0, it is used to animate the wave.</li>
+              <li><div class = "bold">'amplitude':</div>The amplitude of this sine wave is set to 75.0, this controls the height of the sine wave.</li>
+              <li><div class = "bold">'period':</div>The period of the wave is set to 500 pixels. This variable determines how many oscillations the wave completes within the canvas.</li>
+              <li><div class = "bold">'dx':</div> It's calculated as two pi divided by the period multiplied by the x spacing, and determines how much theta (the angle) chnages in each itteration.</li>
+              <li><div class = "bold">'yvalues':</div> This is an array used to store the y-coordinates of the wave points.</li>
+            </ul>
+            <br>
+            <li class="bold">setup() Function</li>
+            <ul>
+              <li><div class = "bold">'setup()':</div> setup() is a p5.js function that is called once when the program starts.</li>
+              <li><div class = "bold">'strokeWeight(1)':</div> strokeWeight() defines the weight, in this case, the stroke weight is one pixel.</li>
+              <li><div class = "bold">'createCanvas(windowWidth, 500)':</div> This creates an HTML5 canvas with a width equal to the width of the window and a fixed height of 500 pixels.</li>
+              <li><div class = "bold">'w':</div> The function we previouly declared 'w', is initialised to width + 16. Which is the width of the canvas plus an offset.</li>
+              <li><div class = "bold">'dx':</div> The difference in the x value.</li>
+              <li><div class = "bold">'yvalues':</div> An array of y values is created, with the y value being determined by the width divided by the x spacing.</li>
+            </ul>
+            <br>
+            <li class="bold">draw() Function</li>
+            <ul>
+              <li><div class = "bold">'draw()':</div> draw() is another p5.js fnction that continuously executes as long as the program is running.</li>
+              <li><div class = "bold">'background()':</div> This sets the background color to black.</li>
+              <li><div class = "bold">'calcWave()':</div> This calls the calcWave function which is defined below.</li>
+              <li><div class = "bold">'renderWave':</div> This calls the renderWave function which is defined below.</li>
+            </ul>
+            <br>
+            <li class="bold">calcWave() Function</li>
+            <ul>
+              <li><div class = "bold">'theta += 0.02':</div> This increments theta by a value of 0.02 pixels per frame to animate the wave.</li>
+              <li>It then iterates through the yvalues array. For each element, it calculates the sine of x, which is initially equal to theta and multiplies it by the amplitude. The result is stored in the yvalues array.</li>
+              <li>'x' is incremented by dx in each iteration, causing the wave to move horizontally.</li>
+            </ul>
+            <br>
+            <li class="bold">renderWave() Function</li>
+            <ul>
+              <li><div class = "bold">'renderWave()':</div> Is responsible for rendering the waves on the canvas.</li>
+              <li>It sets the stroke to noStroke() (no outline), and then fills the color to black. </li>
+              <li>It then loops through the y values array and draws ellipses at the calculated x and y coordinates to represent the wave. The wave points are evenly spaced horizontally and hae a fixed size of 16 pixels by 16 pixels.</li>
+            </ul>
+            <br>
+          </ol>
+      </div>
+    </div>
+    <br>
+    <h3 class="heading1">Sine Wave Visualisation</h3>
+    
+    
+  </body>
+</html>
