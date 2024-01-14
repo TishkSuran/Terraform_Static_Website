@@ -33,3 +33,27 @@ This project does not contain local variables; instead, we have opted for the us
 
 We have two input variables. One of them defines the AWS region in this case, 'eu-west-2' (London) as well as the bucket name prefix, which will be used to name our bucket later down the line.
 
+<br>
+
+### Extension of Terraform Provider Block
+
+```hcl
+provider "aws" {
+  region = var.region
+}
+```
+
+Here, using the variable <strong>region</strong> that we defined above, we declare the AWS region, which in this case is eu-west-2.
+
+<br>
+
+### Template Files Terraform Module 
+
+```hcl
+module "template_files" {
+  source   = "hashicorp/dir/template"
+  base_dir = "${path.module}/PPC"
+}
+```
+
+This module instructs Terraform to use the module located in hte "hashicorp/dir/template" directory, which is a template module for preparing static files and templates. It sets the base_dir (base directory) to the directory PPC, which in my case, is the directory that contains all the files I want to host onto this S3 bucket.
