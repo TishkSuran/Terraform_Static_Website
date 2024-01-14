@@ -90,6 +90,8 @@ resource "aws_s3_bucket" "s3_bucket" {
 
 The only required parameter for S3 buckets is the bucket name. Here, we integrate one of the resource blocks we defined ('random_string') with one of the variables we declared near the start of this project ('bucket_name_prefix'). This naming approach for our S3 bucket ensures that the name is always unique, enhancing scalability and consistency in case of future expansion.
 
+<br>
+
 ### AWS S3 Bucket Public Access Block 
 
 ```hcl
@@ -124,6 +126,8 @@ resource "aws_s3_bucket_policy" "hosting_bucket_policy" {
   })
 }
 ```
+
+This Terraform configuration defines an Amazon S3 bucket policy for the S3 bucket we previously created. This policy allows public read access to objects we added in the S3 bucket. The "jsonencode" function is used to convert the policy definition into JSON format, and this JSON policy is then associated with the S3 bucket specified in the "bucket" parameter.
 
 
 
