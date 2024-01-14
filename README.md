@@ -89,3 +89,42 @@ resource "aws_s3_bucket" "s3_bucket" {
 ```
 
 The only required parameter for S3 buckets is the bucket name. Here, we integrate one of the resource blocks we defined ('random_string') with one of the variables we declared near the start of this project ('bucket_name_prefix'). This naming approach for our S3 bucket ensures that the name is always unique, enhancing scalability and consistency in case of future expansion.
+
+### AWS S3 Bucket Public Access Block 
+
+```hcl
+resource "aws_s3_bucket_public_access_block" "website" {
+  bucket                   = aws_s3_bucket.s3_bucket.id
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+```
+
+This Terraform configuration ensures that for the S3 bucket we created and specified by using ID identification ('aws_s3_bucket.s3_bucket.id') does not have restrictions on public access. It sets various parameters to fales, to allow public access control lists, public bucket policies as well as public access to objects within the bucket. We have added this block and set these parameters to make our static website publically accessible. 
+
+<br>
+
+### AWS S3 Bucket Policy Resource Block 
+
+```hcl
+resource "aws_s3_bucket_policy" "hosting_bucket_policy" {
+  bucket = aws_s3_bucket.s3_bucket.bucket
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect    = "Allow",
+        Principal = "*",
+        Action    = "s3:GetObject",
+        Resource  = "${aws_s3_bucket.s3_bucket.arn}/*"
+      }
+    ]
+  })
+}
+```
+
+
+
+
