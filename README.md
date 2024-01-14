@@ -57,3 +57,35 @@ module "template_files" {
 ```
 
 This module instructs Terraform to use the module located in hte "hashicorp/dir/template" directory, which is a template module for preparing static files and templates. It sets the base_dir (base directory) to the directory PPC, which in my case, is the directory that contains all the files I want to host onto this S3 bucket.
+
+<br>
+
+### Random Numeric String Generator Resource Block
+
+```hcl
+resource "random_string" "string_suffix" {
+  length      = 8
+  special     = false
+  upper       = false
+  lower       = true
+  numeric     = true
+  min_numeric = 8
+}
+```
+This resource block defines a random string that will generate a string of length 8. By configuring the parameters as shown above, only numeric digits will be included. This string will be appended to our S3 bucket name to ensure its uniqueness.
+
+<br>
+
+### AWS S3 Bucket Resource Block
+
+```hcl
+resource "aws_s3_bucket" "s3_bucket" {
+  bucket = "${var.bucket_name_prefix}-${random_string.string_suffix.result}"
+
+  tags = {
+    Description = "Bucket used for hosting a static website."
+  }
+}
+```
+
+The only required parameter for S3 buckets is the bucket name. Here, we integrate one of the resource blocks we defined ('random_string') with one of the variables we declared near the start of this project ('bucket_name_prefix'). This naming approach for our S3 bucket ensures that the name is always unique, enhancing scalability and consistency in case of future expansion.
